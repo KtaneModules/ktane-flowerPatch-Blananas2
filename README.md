@@ -1,1 +1,1 @@
-ktane-flowerPatch
+#[ModKit Wiki](../../wiki)
