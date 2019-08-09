@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.RegularExpressions;
 using UnityEngine;
 using KModkit;
 
@@ -28,6 +29,7 @@ public class flowerPatchScript : MonoBehaviour {
     public List<string> positionLetters = new List<string> { "ADHLNTU", "DHJNQTZ", "CDHNQTUZ", "DHJNTXZ", "ADEHNQTU", "HLMUXZ", "HJMQZ", "CHMUXZ", "HJMXZ", "EHMUXZ", "ADHLQU", "DHJXZ", "CDHQUZ", "DHJXZ", "ADEHUX" };
     public List<string> colorLetters = new List<string> { "KPR", "KOS", "KPY", "FGS", "BFP", "FI", "FSV", "W" };
     public List<int> solutionFlowers = new List<int> {};
+    public List<int> pressedFlowers = new List<int> { };
 
     void Awake () {
         moduleId = moduleIdCounter++;
@@ -98,6 +100,7 @@ public class flowerPatchScript : MonoBehaviour {
                 {
                     if (solutionFlowers[n] == 1)
                     {
+                        pressedFlowers.Add(n);
                         solutionFlowers[n] = 0;
                         SolveCheck();
                     } else
@@ -118,6 +121,119 @@ public class flowerPatchScript : MonoBehaviour {
             GetComponent<KMBombModule>().HandlePass();
             moduleSolved = true;
             Debug.LogFormat("[Flower Patch #{0}] All correct flowers selected, module solved.", moduleId);
+        }
+    }
+
+    //twitch plays
+    private bool numsAreValid(string s)
+    {
+        string[] nums = s.Split(' ');
+        for(int i = 0; i < nums.Length; i++)
+        {
+            int temp = 0;
+            bool check = int.TryParse(nums[i], out temp);
+            if(check == false)
+            {
+                return false;
+            }else if(temp < 1 || temp > 15)
+            {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    #pragma warning disable 414
+    private readonly string TwitchHelpMessage = @"!{0} flower 1 12 7 [Presses the specified flower where 1-15 is each flower's position in reading order] | !{0} reset [Removes all inputted flowers]";
+    #pragma warning restore 414
+    IEnumerator ProcessTwitchCommand(string command)
+    {
+        if (Regex.IsMatch(command, @"^\s*reset\s*$", RegexOptions.IgnoreCase | RegexOptions.CultureInvariant))
+        {
+            yield return null;
+            Debug.LogFormat("[Flower Patch #{0}] TP Reset called!", moduleId);
+            for (int j = 0; j < pressedFlowers.Count; j++)
+            {
+                solutionFlowers[pressedFlowers[j]] = 1;
+            }
+            yield break;
+        }
+        string[] parameters = command.Split(' ');
+        if (Regex.IsMatch(parameters[0], @"^\s*flower\s*$", RegexOptions.IgnoreCase | RegexOptions.CultureInvariant) || Regex.IsMatch(parameters[0], @"^\s*submit\s*$", RegexOptions.IgnoreCase | RegexOptions.CultureInvariant))
+        {
+            if(parameters.Length >= 2)
+            {
+                string nums = command.Substring(7);
+                if (numsAreValid(nums))
+                {
+                    yield return null;
+                    for(int i = 1; i < parameters.Length; i++)
+                    {
+                        if (parameters[i].EqualsIgnoreCase("1"))
+                        {
+                            flowers[0].OnInteract();
+                        }
+                        else if (parameters[i].EqualsIgnoreCase("2"))
+                        {
+                            flowers[1].OnInteract();
+                        }
+                        else if (parameters[i].EqualsIgnoreCase("3"))
+                        {
+                            flowers[2].OnInteract();
+                        }
+                        else if (parameters[i].EqualsIgnoreCase("4"))
+                        {
+                            flowers[3].OnInteract();
+                        }
+                        else if (parameters[i].EqualsIgnoreCase("5"))
+                        {
+                            flowers[4].OnInteract();
+                        }
+                        else if (parameters[i].EqualsIgnoreCase("6"))
+                        {
+                            flowers[5].OnInteract();
+                        }
+                        else if (parameters[i].EqualsIgnoreCase("7"))
+                        {
+                            flowers[6].OnInteract();
+                        }
+                        else if (parameters[i].EqualsIgnoreCase("8"))
+                        {
+                            flowers[7].OnInteract();
+                        }
+                        else if (parameters[i].EqualsIgnoreCase("9"))
+                        {
+                            flowers[8].OnInteract();
+                        }
+                        else if (parameters[i].EqualsIgnoreCase("10"))
+                        {
+                            flowers[9].OnInteract();
+                        }
+                        else if (parameters[i].EqualsIgnoreCase("11"))
+                        {
+                            flowers[10].OnInteract();
+                        }
+                        else if (parameters[i].EqualsIgnoreCase("12"))
+                        {
+                            flowers[11].OnInteract();
+                        }
+                        else if (parameters[i].EqualsIgnoreCase("13"))
+                        {
+                            flowers[12].OnInteract();
+                        }
+                        else if (parameters[i].EqualsIgnoreCase("14"))
+                        {
+                            flowers[13].OnInteract();
+                        }
+                        else if (parameters[i].EqualsIgnoreCase("15"))
+                        {
+                            flowers[14].OnInteract();
+                        }
+                        yield return new WaitForSeconds(0.1f);
+                    }
+                    yield break;
+                }
+            }
         }
     }
 }
