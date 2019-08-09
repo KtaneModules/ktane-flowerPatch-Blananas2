@@ -2866,8 +2866,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 72eb322975b4c5949927727e48430149, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Bomb: {fileID: 0}
-  Audio: {fileID: 0}
+  Bomb: {fileID: 114454383462897410}
+  Audio: {fileID: 114915473299363512}
   flowers:
   - {fileID: 114374387904722820}
   - {fileID: 114442262565687448}
@@ -2920,6 +2920,7 @@ MonoBehaviour:
   - FSV
   - W
   solutionFlowers: 
+  pressedFlowers: 
 --- !u!114 &114588622450921106
 MonoBehaviour:
   m_ObjectHideFlags: 1
