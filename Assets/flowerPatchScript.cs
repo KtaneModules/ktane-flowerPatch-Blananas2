@@ -26,7 +26,7 @@ public class flowerPatchScript : MonoBehaviour {
     int colorNow;
     string flowerString = "";
     public List<int> flowerColors = new List<int> { };
-    public List<string> positionLetters = new List<string> { "ADHLNTU", "DHJNQTZ", "CDHNQTUZ", "DHJNTXZ", "ADEHNQTU", "HLMUXZ", "HJMQZ", "CHMUXZ", "HJMXZ", "EHMUXZ", "ADHLQU", "DHJXZ", "CDHQUZ", "DHJXZ", "ADEHUX" };
+    public List<string> positionLetters = new List<string> { "ADHLNU", "DHJNQZ", "CDHNQUZ", "DHJNXZ", "ADEHNQU", "HLMUXZ", "HJMQZ", "CHMUXZ", "HJMXZ", "EHMUXZ", "ADHLQTU", "DHJTXZ", "CDHQTUZ", "DHJTXZ", "ADEHTUX" };
     public List<string> colorLetters = new List<string> { "KPR", "KOS", "KPY", "FGS", "BFP", "FI", "FSV", "W" };
     public List<int> solutionFlowers = new List<int> {};
     public List<int> pressedFlowers = new List<int> { };
