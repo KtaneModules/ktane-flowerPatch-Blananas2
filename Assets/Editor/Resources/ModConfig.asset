@@ -1,0 +1,22 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 615501dbe4f3fe94fbf4b564abb10237, type: 3}
+  m_Name: ModConfig
+  m_EditorClassIdentifier: 
+  id: flowerPatch
+  title: Flower Patch
+  author: Blananas2
+  description: "You think bomb defusal is for babies? What kind of monster are you?!\n\nModule
+    ID: flowerPatch\nCreated by Blananas2\n\nThanks to Tas~Thing for giving me all
+    the flower designs!\n\nThe manual can be found here: https://ktane.timwi.de/HTML/Flower%20Patch.html\r"
+  version: 1.2.1
+  outputFolder: build
+  previewImage: {fileID: 2800000, guid: 7daa9f45002de844f9b01d3b0c2ae801, type: 3}
