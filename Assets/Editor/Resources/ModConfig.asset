@@ -17,6 +17,6 @@ MonoBehaviour:
   description: "You think bomb defusal is for babies? What kind of monster are you?!\n\nModule
     ID: flowerPatch\nCreated by Blananas2\n\nThanks to Tas~Thing for giving me all
     the flower designs!\n\nThe manual can be found here: https://ktane.timwi.de/HTML/Flower%20Patch.html\r"
-  version: 1.0
+  version: 1.2.1
   outputFolder: build
   previewImage: {fileID: 2800000, guid: 7daa9f45002de844f9b01d3b0c2ae801, type: 3}
