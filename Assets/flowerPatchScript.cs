@@ -118,6 +118,7 @@ public class flowerPatchScript : MonoBehaviour
                     {
                         pressedFlowers.Add(n);
                         solutionFlowers[n] = 0;
+                        Debug.LogFormat("[Flower Patch #{0}] Selected flower {1}, which is correct.", moduleId, n + 1);
                         SolveCheck();
                     }
                     else
