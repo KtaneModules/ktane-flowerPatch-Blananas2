@@ -273,4 +273,17 @@ public class flowerPatchScript : MonoBehaviour
             }
         }
     }
+
+    private IEnumerator TwitchHandleForcedSolve()
+    {
+        for (int i = 0; i < 15; i++)
+        {
+            if (solutionFlowers[i] == 1 && !pressedFlowers.Contains(i))
+            {
+                flowers[i].OnInteract();
+                if (!moduleSolved)
+                    yield return new WaitForSeconds(0.1f);
+            }
+        }
+    }
 }
