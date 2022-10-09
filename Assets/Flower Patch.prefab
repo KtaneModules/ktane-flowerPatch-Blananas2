@@ -666,7 +666,7 @@ GameObject:
   - component: {fileID: 114047213225682446}
   - component: {fileID: 114666878727170722}
   m_Layer: 0
-  m_Name: Template
+  m_Name: Flower Patch
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -3974,7 +3974,7 @@ MonoBehaviour:
   - {fileID: 114664750741613022}
   - {fileID: 114326260995811950}
   IsPassThrough: 0
-  ChildRowLength: 0
+  ChildRowLength: 5
   Highlight: {fileID: 114570430299588062}
   SelectableColliders: []
   DefaultSelectableIndex: 0
