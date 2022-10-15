@@ -125,6 +125,10 @@ public class flowerPatchScript : MonoBehaviour
                     {
                         GetComponent<KMBombModule>().HandleStrike();
                         Debug.LogFormat("[Flower Patch #{0}] Selected flower {1}, which is incorrect, module striked.", moduleId, n + 1);
+                        for (int j = 0; j < pressedFlowers.Count; j++)
+                        {
+                            solutionFlowers[pressedFlowers[j]] = 1;
+                        }
                     }
                 }
             }
@@ -163,20 +167,10 @@ public class flowerPatchScript : MonoBehaviour
     }
 
 #pragma warning disable 414
-    private readonly string TwitchHelpMessage = @"!{0} flower 1 12 7 [Presses the specified flower where 1-15 is each flower's position in reading order] | !{0} colorblind [Toggles colorblind mode] | !{0} reset [Removes all inputted flowers]";
+    private readonly string TwitchHelpMessage = @"!{0} flower 1 12 7 [Presses the specified flower where 1-15 is each flower's position in reading order] | !{0} colorblind [Toggles colorblind mode]";
 #pragma warning restore 414
     IEnumerator ProcessTwitchCommand(string command)
     {
-        if (Regex.IsMatch(command, @"^\s*reset\s*$", RegexOptions.IgnoreCase | RegexOptions.CultureInvariant))
-        {
-            yield return null;
-            Debug.LogFormat("[Flower Patch #{0}] TP Reset called!", moduleId);
-            for (int j = 0; j < pressedFlowers.Count; j++)
-            {
-                solutionFlowers[pressedFlowers[j]] = 1;
-            }
-            yield break;
-        }
         if (Regex.IsMatch(command, @"^\s*colorblind\s*$", RegexOptions.IgnoreCase | RegexOptions.CultureInvariant))
         {
             yield return null;
