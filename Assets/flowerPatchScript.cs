@@ -12,6 +12,7 @@ public class flowerPatchScript : MonoBehaviour
     public KMBombInfo Bomb;
     public KMAudio Audio;
     public KMColorblindMode CBthing;
+    public KMRuleSeedable RuleSeedable;
 
     public KMSelectable[] flowers;
     public Material[] mats;
@@ -28,11 +29,11 @@ public class flowerPatchScript : MonoBehaviour
     char solutionLetter;
     int colorNow;
     string flowerString = "";
-    public List<int> flowerColors = new List<int> { };
-    public List<string> positionLetters = new List<string> { "ADHLNU", "DHJNQZ", "CDHNQUZ", "DHJNXZ", "ADEHNQU", "HLMUXZ", "HJMQZ", "CHMUXZ", "HJMXZ", "EHMUXZ", "ADHLQTU", "DHJTXZ", "CDHQTUZ", "DHJTXZ", "ADEHTUX" };
-    public List<string> colorLetters = new List<string> { "KPR", "KOS", "KPY", "FGS", "BFP", "FI", "FSV", "W" };
-    public List<int> solutionFlowers = new List<int> { };
-    public List<int> pressedFlowers = new List<int> { };
+    private List<int> flowerColors = new List<int> { };
+    private List<string> positionLetters = new List<string>(15) { "", "", "", "", "", "", "", "", "", "", "", "", "", "", "" };
+    private List<string> colorLetters = new List<string>(8) { "", "", "", "", "", "", "", "" };
+    private List<int> solutionFlowers = new List<int> { };
+    private List<int> pressedFlowers = new List<int> { };
     bool CBactive = false;
     string CBletters = "ROYGBIVW";
 
@@ -47,16 +48,114 @@ public class flowerPatchScript : MonoBehaviour
         }
     }
 
+    public class FlowerPatchRule
+    {
+        public bool IsPositionRule;
+        public int[] Results;
+        public string LogRule;
+
+        public FlowerPatchRule(bool isPositionRule, int[] results, string logRule)
+        {
+            IsPositionRule = isPositionRule;
+            Results = results;
+            LogRule = logRule;
+        }
+    }
+
+    public FlowerPatchRule[] Rules = new FlowerPatchRule[]
+    {
+        // r o y g b i v w
+        new FlowerPatchRule(true, new int[] {0, 4, 10, 14}, "In the corners"),
+        new FlowerPatchRule(false, new int[] {4}, "That are blue"),
+        new FlowerPatchRule(true, new int[] {2, 7, 12}, "In the middle column"),
+        new FlowerPatchRule(true, new int[] {0, 1, 2, 3, 4, 10, 11, 12, 13, 14}, "In the 1st amd 3rd rows"),
+        new FlowerPatchRule(true, new int[] {4, 9, 14}, "In the eastmost column"),
+        new FlowerPatchRule(false, new int[] {3, 4, 5, 6}, "That are cold colored"),
+        new FlowerPatchRule(false, new int[] {3}, "That are green"),
+        new FlowerPatchRule(true, new int[] {0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14}, "In general; select all of them"),
+        new FlowerPatchRule(false, new int[] {5}, "That are indigo"),
+        new FlowerPatchRule(true, new int[] {1, 3, 6, 8, 11, 13}, "In the 2nd and 4th columns"),
+        new FlowerPatchRule(false, new int[] {0, 1, 2}, "That are warm colored"),
+        new FlowerPatchRule(true, new int[] {0, 6, 11}, "In the leftmost column"),
+        new FlowerPatchRule(true, new int[] {5, 6, 7, 8, 9}, "In the middle row"),
+        new FlowerPatchRule(true, new int[] {0, 1, 2, 3, 4}, "In the northmost row"),
+        new FlowerPatchRule(false, new int[] {1}, "That are orange"),
+        new FlowerPatchRule(false, new int[] {0, 2, 4}, "That are primary colored"),
+        new FlowerPatchRule(true, new int[] {1, 2, 4, 6, 10, 12}, "In prime numbered positions"),
+        new FlowerPatchRule(false, new int[] {0}, "That are red"),
+        new FlowerPatchRule(false, new int[] {1, 3, 6}, "That are secondary colored"),
+        new FlowerPatchRule(true, new int[] {10, 11, 12, 13, 14}, "In the third row"),
+        new FlowerPatchRule(true, new int[] {0, 2, 4, 5, 7, 9, 10, 12, 14}, "In the 1st, 3rd and 5th columns"),
+        new FlowerPatchRule(false, new int[] {6}, "That are violet"),
+        new FlowerPatchRule(false, new int[] {7}, "That are white"),
+        new FlowerPatchRule(true, new int[] {0, 3, 5, 7, 8, 9, 11, 13, 14}, "In composite numbered positions"),
+        new FlowerPatchRule(false, new int[] {2}, "That are yellow"),
+        new FlowerPatchRule(true, new int[] {1, 2, 3, 5, 6, 7, 8, 9, 11, 12, 13}, "Not in the corners"),
+        new FlowerPatchRule(true, new int[] {0, 1, 2, 3, 4, 5, 10}, "In the top row or leftmost column"),
+        new FlowerPatchRule(true, new int[] {0, 1, 2, 3, 4, 9, 14}, "In the top row or rightmost column"),
+        new FlowerPatchRule(true, new int[] {0, 5, 10, 11, 12, 13, 14}, "In the bottom row or leftmost column"),
+        new FlowerPatchRule(true, new int[] {4, 9, 10, 11, 12, 13, 14}, "In the bottom row or rightmost column"),
+        new FlowerPatchRule(true, new int[] {2, 5, 6, 7, 8, 9, 12}, "In the middle row or middle column"),
+        new FlowerPatchRule(true, new int[] {1, 5, 11}, "In the second column"),
+        new FlowerPatchRule(true, new int[] {3, 7, 13}, "In the fourth column"),
+        new FlowerPatchRule(true, new int[] {0, 1, 2, 3, 4, 5, 6, 7, 8, 9}, "In the top two rows"),
+        new FlowerPatchRule(true, new int[] {5, 6, 7, 8, 9, 10, 11, 12, 13, 14}, "In the bottom two rows"),
+        new FlowerPatchRule(true, new int[] {7}, "In the middle position"),
+        new FlowerPatchRule(true, new int[] {1, 2, 3, 6, 7, 8, 11, 12, 13}, "In the 2nd, 3rd, and 4th columns"),
+        new FlowerPatchRule(false, new int[] {0, 2}, "That are red or yellow"),
+        new FlowerPatchRule(false, new int[] {1, 3}, "That are orange or green"),
+        new FlowerPatchRule(false, new int[] {2, 4}, "That are yellow or blue"),
+        new FlowerPatchRule(false, new int[] {3, 6}, "That are green or violet"),
+        new FlowerPatchRule(false, new int[] {0, 4}, "That are red or blue"),
+        new FlowerPatchRule(false, new int[] {1, 6}, "That are orange or violet"),
+        new FlowerPatchRule(false, new int[] {5, 7}, "That are indigo or white"),
+        new FlowerPatchRule(false, new int[] {0, 1, 2, 3, 4, 5, 6}, "That are not white"),
+    };
+
     // Use this for initialization
     void Start()
     {
-        if (CBthing.ColorblindModeActive) {
+        var rnd = RuleSeedable.GetRNG();
+        if (rnd.Seed != 1)
+        {
+            Debug.LogFormat("[Flower Patch #{0}] Using rule seed {1}.", moduleId, rnd.Seed);
+            var arr = Venn.ToArray();
+            rnd.ShuffleFisherYates(arr);
+            rnd.ShuffleFisherYates(Rules);
+            Venn = arr.Join("");
+            Debug.LogFormat("<Flower Patch #{0}> Venn diagram: {1}", moduleId, Venn);
+            var str = "";
+            for (int i = 0; i < 26; i++)
+                str += string.Format("\n{0}: {1}.", "ABCDEFGHIJKLMNOPQRSTUVWXYZ"[i], Rules[i].LogRule);
+            Debug.LogFormat("<Flower Patch #{0}> Rules:{1}", moduleId, str);
+        }
+        string alph = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+        for (int i = 0; i < 26; i++)
+        {
+            if (Rules[i].IsPositionRule)
+            {
+                for (int pos = 0; pos < 15; pos++)
+                    if (Rules[i].Results.Contains(pos))
+                        positionLetters[pos] += alph[i];
+            }
+            else
+            {
+                for (int col = 0; col < 8; col++)
+                    if (Rules[i].Results.Contains(col))
+                        colorLetters[col] += alph[i];
+            }
+        }
+
+        if (CBthing.ColorblindModeActive)
+        {
             CBactive = true;
         }
 
         flowerColors.Clear();
         coloredFlowers = UnityEngine.Random.Range(0, 128);
         solutionLetter = Venn[coloredFlowers];
+        var index = solutionLetter - 'A';
+        
         if (coloredFlowers > 63) { flowerColors.Add(0); coloredFlowers -= 64; flowerString += "Red "; } else { flowerColors.Add(7); }
         if (coloredFlowers > 31) { flowerColors.Add(1); coloredFlowers -= 32; flowerString += "Orange "; } else { flowerColors.Add(7); }
         if (coloredFlowers > 15) { flowerColors.Add(2); coloredFlowers -= 16; flowerString += "Yellow "; } else { flowerColors.Add(7); }
@@ -75,7 +174,8 @@ public class flowerPatchScript : MonoBehaviour
             colorNow = flowerColors[i];
             flowers[i].GetComponent<MeshRenderer>().material = mats[colorNow];
             positionLetters[i] += colorLetters[colorNow];
-            if (CBactive) {
+            if (CBactive)
+            {
                 CBtexts[i].text = " " + CBletters[colorNow] + " ";
             }
         }
@@ -95,6 +195,8 @@ public class flowerPatchScript : MonoBehaviour
 
         Debug.LogFormat("[Flower Patch #{0}] The colored flowers are: {1}", moduleId, flowerString);
         Debug.LogFormat("[Flower Patch #{0}] The solution letter is: {1}", moduleId, solutionLetter);
+
+        Debug.LogFormat("[Flower Patch #{0}] Press all the flowers {1}.", moduleId, Rules[index].LogRule.ToLowerInvariant());
 
         if ((solutionFlowers[0] + solutionFlowers[1] + solutionFlowers[2] + solutionFlowers[3] + solutionFlowers[4] + solutionFlowers[5] + solutionFlowers[6] + solutionFlowers[7] + solutionFlowers[8] + solutionFlowers[9] + solutionFlowers[10] + solutionFlowers[11] + solutionFlowers[12] + solutionFlowers[13] + solutionFlowers[14]) == 0)
         {
@@ -174,13 +276,16 @@ public class flowerPatchScript : MonoBehaviour
         if (Regex.IsMatch(command, @"^\s*colorblind\s*$", RegexOptions.IgnoreCase | RegexOptions.CultureInvariant))
         {
             yield return null;
-            if (CBactive) {
+            if (CBactive)
+            {
                 CBactive = false;
                 for (int i = 0; i < 15; i++)
                 {
                     CBtexts[i].text = "   ";
                 }
-            } else {
+            }
+            else
+            {
                 CBactive = true;
                 for (int i = 0; i < 15; i++)
                 {
